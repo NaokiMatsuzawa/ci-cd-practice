@@ -3,3 +3,6 @@ def add(a, b):
 
 if __name__ == "__main__":
   print(add(2, 3))
+
+def multiply(a, b):
+  return a * b
