@@ -21,5 +21,11 @@ jobs:
       - name: Install dependencies
         run: pip install pytest
 
+      - name: Install black
+        run: pip install black
+
+      - name: check black
+        run: black --check .
+
       - name: Run tests
         run: pytest -v
