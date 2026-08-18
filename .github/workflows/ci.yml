@@ -81,5 +81,5 @@ jobs:
       - name: Smoke test
         run: |
           kubectl port-forward svc/ci-cd-practice 8080:80 &
-          sleep3
+          sleep 3
           curl --fail http://localhost:8080
