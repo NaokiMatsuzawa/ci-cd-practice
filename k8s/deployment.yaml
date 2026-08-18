@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ci-cd-practice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ci-cd-practice
+  template:
+    metadata:
+      labels:
+        app: ci-cd-practice
+    spec:
+      containers:
+        - name: ci-cd-practice
+          image: ci-cd-practice:ci-test
+          ports: 
+            - containerPort: 8000
