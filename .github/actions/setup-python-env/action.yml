@@ -1,12 +1,9 @@
 name: 'Setup Python Environment'
-description: 'Checkout code and set up Python'
+description: 'set up Python'
 
 runs:
   using: "composite"
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
