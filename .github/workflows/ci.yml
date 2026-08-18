@@ -53,3 +53,33 @@ jobs:
           tags: |
             ghcr.io/${{env.REPO_LOWER}}:latest
             ghcr.io/${{env.REPO_LOWER}}:${{env.SHORT_SHA}}
+
+  deploy-to-kind:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: ci-test-cluster
+
+      - name: Build Docker image
+        run: docker build -t ci-cd-practice:ci-test .
+
+      - name: Load image int kind
+        run: kind load docker-image ci-cd-practice:ci-test --name ci-test-cluster
+
+      - name: Deploy to kind
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl rollout status deployment/ci-cd-practice --timeout=60s
+
+      - name: Smoke test
+        run: |
+          kubectl port-forward svc/ci-cd-practice 8080:80 &
+          sleep3
+          curl --fail http://localhost:8080
